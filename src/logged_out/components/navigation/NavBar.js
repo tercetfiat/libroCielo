@@ -53,7 +53,7 @@ function NavBar(props) {
       name: "Blog",
       icon: <BookIcon className="text-white" />
     },
-    {
+    /*{
       name: "Register",
       onClick: openRegisterDialog,
       icon: <HowToRegIcon className="text-white" />
@@ -62,7 +62,7 @@ function NavBar(props) {
       name: "Login",
       onClick: openLoginDialog,
       icon: <LockOpenIcon className="text-white" />
-    }
+    }*/
   ];
   return (
     <div className={classes.root}>
@@ -75,7 +75,7 @@ function NavBar(props) {
               display="inline"
               color="primary"
             >
-              Wa
+              Libro de 
             </Typography>
             <Typography
               variant="h4"
@@ -83,7 +83,7 @@ function NavBar(props) {
               display="inline"
               color="secondary"
             >
-              Ver
+              Cielo
             </Typography>
           </div>
           <div>

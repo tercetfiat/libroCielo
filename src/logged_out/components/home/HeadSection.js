@@ -15,21 +15,21 @@ const styles = (theme) => ({
     },
   },
   extraLargeButton: {
-    paddingTop: theme.spacing(1.5),
-    paddingBottom: theme.spacing(1.5),
+    paddingTop: theme.spacing(.5),
+    paddingBottom: theme.spacing(.5),
     [theme.breakpoints.up("xs")]: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
     },
     [theme.breakpoints.up("lg")]: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
+      paddingTop: theme.spacing(.5),
+      paddingBottom: theme.spacing(.5),
     },
   },
   card: {
     boxShadow: theme.shadows[4],
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     [theme.breakpoints.up("xs")]: {
       paddingTop: theme.spacing(3),
       paddingBottom: theme.spacing(3),
@@ -59,7 +59,7 @@ const styles = (theme) => ({
   wrapper: {
     position: "relative",
     backgroundColor: theme.palette.secondary.main,
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   image: {
     maxWidth: "100%",
@@ -68,16 +68,16 @@ const styles = (theme) => ({
     boxShadow: theme.shadows[4],
   },
   container: {
-    marginTop: theme.spacing(6),
-    marginBottom: theme.spacing(12),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down("lg")]: {
-      marginBottom: theme.spacing(9),
+      marginBottom: theme.spacing(1),
     },
     [theme.breakpoints.down("md")]: {
-      marginBottom: theme.spacing(6),
+      marginBottom: theme.spacing(1),
     },
     [theme.breakpoints.down("md")]: {
-      marginBottom: theme.spacing(3),
+      marginBottom: theme.spacing(1),
     },
   },
   containerFix: {
@@ -86,7 +86,7 @@ const styles = (theme) => ({
     },
   },
   waveBorder: {
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
   },
 });
 
@@ -115,8 +115,7 @@ function HeadSection(props) {
                     >
                       <Box mb={4}>
                         <Typography variant={isWidthUpLg ? "h3" : "h4"}>
-                          Free Template for building a SaaS app using
-                          Material-UI
+                         Libro de Cielo Buscador
                         </Typography>
                       </Box>
                       <div>
@@ -125,20 +124,9 @@ function HeadSection(props) {
                             variant={isWidthUpLg ? "h6" : "body1"}
                             color="textSecondary"
                           >
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt
+                            Buscador de el libro de Cielo, busca por palabra o frase, en todos los 36 tomos del libro de Cielo
                           </Typography>
                         </Box>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          fullWidth
-                          className={classes.extraLargeButton}
-                          classes={{ label: classes.extraLargeButtonLabel }}
-                          href="https://github.com/dunky11/react-saas-template"
-                        >
-                          Download from GitHub
-                        </Button>
                       </div>
                     </Box>
                   </Grid>

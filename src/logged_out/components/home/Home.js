@@ -13,7 +13,7 @@ function Home(props) {
     <Fragment>
       <HeadSection />
       <FeatureSection />
-      <PricingSection />
+      { false && <PricingSection /> }
     </Fragment>
   );
 }

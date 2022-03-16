@@ -15,6 +15,9 @@ import { withTheme } from "@mui/styles";
 import FeatureCard from "./FeatureCard";
 import useWidth from "../../../shared/functions/useWidth";
 
+
+import data from "../../../logged_in/dummy_data/persons";
+import DataGridComp from "../../../shared/components/DataGridComp";
 const iconSize = 30;
 
 const features = [
@@ -96,32 +99,18 @@ function FeatureSection(props) {
   const { theme } = props;
   const width = useWidth();
   const isWidthUpMd = useMediaQuery(theme.breakpoints.up("md"));
+  const [targets, setTargets] = React.useState([]);
+  //setTargets(data);
 
   return (
     <div style={{ backgroundColor: "#FFFFFF" }}>
       <div className="container-fluid lg-p-top">
         <Typography variant="h3" align="center" className="lg-mg-bottom">
-          Features
+          Buscador
         </Typography>
         <div className="container-fluid">
-          <Grid container spacing={calculateSpacing(width, theme)}>
-            {features.map((element) => (
-              <Grid
-                item
-                xs={6}
-                md={4}
-                data-aos="zoom-in-up"
-                data-aos-delay={isWidthUpMd ? element.mdDelay : element.smDelay}
-                key={element.headline}
-              >
-                <FeatureCard
-                  Icon={element.icon}
-                  color={element.color}
-                  headline={element.headline}
-                  text={element.text}
-                />
-              </Grid>
-            ))}
+          <Grid container spacing={1}>
+            <DataGridComp/>
           </Grid>
         </div>
       </div>
