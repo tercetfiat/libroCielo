@@ -2,9 +2,7 @@ import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Stack, TextField, InputAdornment } from '@mui/material';
 import { Box } from '@mui/system';
-const headersAuth = {
-    'Content-Type': 'application/json'
-};
+const headersAuth = { 'Content-Type': 'application/json' };
 
 const headersRequest = {
     Accept: "application/json",  'Content-Type': 'application/json',
@@ -38,8 +36,8 @@ async function getData(pageNo, pageSize, pattern) {
     };
 
     return await fetch(process.env.REACT_APP_URL_API_BOOK + '/api/book/findByPattern/' + pattern + '?' + 'pageNo=' + pageNo + '&pageSize=' + pageSize, options)
-        .then(response => {console.log(response);  return response.status === 403?"retry":response.json()})  
-        .then(data => { console.log(data); return data; })
+        .then(response => {  return response.status === 403?"retry":response.json()})  
+        //.then(data => { console.log(data); return data; })
         .catch(e => { console.log(e); return "retry"; })
 
 }
@@ -52,9 +50,9 @@ const loadServerRows = (page, pagSize, allRows, pattern) =>
                     let aux = await getData(page + 1, pagSize, pattern);
                     if (aux === 'retry') {
                         let jwt = await getAuthToken();
-                        console.log("Intentar de nuevo")
+                        //console.log("Intentar de nuevo")
                         aux = await getData(page + 1, pagSize, pattern);
-                        console.log("ver2:" + aux);
+                        //console.log("ver2:" + aux);
                     }
 
                     if(aux && aux !== 'retry'){
@@ -83,8 +81,8 @@ const useQuery = (page, pageSize, allRows, pattern) => {
             if (!active) {
                 return;
             }
-            console.log("newRows")
-            console.log(newRows);
+            //console.log("newRows")
+            //console.log(newRows);
             setData(newRows);
             setIsLoading(false);
             setRowCount(allRows.length);
@@ -113,17 +111,15 @@ export default function DataGridComp() {
     //const pageChange = (newPage) => { setPage(newPage); }
 
    
-    const search = (event) => {
+    const search = (eventOrVal) => {
 
         setIsLoading(true);
         setRowCount(undefined);
-        console.log(event);
-        console.log(rowsState);
         (async () => {
-            let aux = await getData(Number.isInteger(event)?event:0, rowsState.pageSize, pattern);
+            let aux = await getData(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
             if (aux === 'retry') {
                 let jwt = await getAuthToken();
-                aux = await getData(Number.isInteger(event)?event:0, rowsState.pageSize, pattern);
+                aux = await getData(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
 
             }
 
@@ -181,7 +177,7 @@ export default function DataGridComp() {
                         headerName: "Encontrado",
                         renderCell: (params) => (
                             <div> {params.value}</div>
-                        ), width: 600
+                        ), width: 800
                     },
                 ]}
                 pagination

@@ -120,12 +120,11 @@ function HeadSection(props) {
                       </Box>
                       <div>
                         <Box mb={2}>
-                          <Typography
-                            variant={isWidthUpLg ? "h6" : "body1"}
-                            color="textSecondary"
-                          >
+                          <Typography variant={isWidthUpLg ? "h6" : "body1"} color="textSecondary">
                             Buscador de el libro de Cielo, busca por palabra o frase, en todos los 36 tomos del libro de Cielo
+                             Tomando de referencia la versión PDF de la página TERCER FIAT: 
                           </Typography>
+                          < a target="_blank" href="https://www.tercerfiat.com/_files/ugd/0f0b15_350a027761cb4f39bab3abe7c62aa907.pdf">Ver aqui </a>
                         </Box>
                       </div>
                     </Box>

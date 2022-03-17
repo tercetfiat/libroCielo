@@ -48,12 +48,12 @@ function NavBar(props) {
       name: "Home",
       icon: <HomeIcon className="text-white" />
     },
-    {
+    /*{
       link: "/blog",
       name: "Blog",
       icon: <BookIcon className="text-white" />
     },
-    /*{
+    {
       name: "Register",
       onClick: openRegisterDialog,
       icon: <HowToRegIcon className="text-white" />
