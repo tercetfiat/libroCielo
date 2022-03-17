@@ -24,7 +24,7 @@ async function getAuthToken() {
     return await fetch(process.env.REACT_APP_URL_API_BOOK + '/authenticate', options)
         .then(response => response.json())
         .then(jwt => {
-            console.log(jwt.jwtToken);
+            //console.log(jwt.jwtToken);
             localStorage.setItem("jwt", jwt.jwtToken)
             headersRequest.Authorization = "Bearer " + localStorage.getItem('jwt')
             return jwt;
@@ -36,8 +36,9 @@ async function getData(pageNo, pageSize, pattern) {
         method: 'GET',
         headers: headersRequest,
     };
+
     return await fetch(process.env.REACT_APP_URL_API_BOOK + '/api/book/findByPattern/' + pattern + '?' + 'pageNo=' + pageNo + '&pageSize=' + pageSize, options)
-        .then(response => { return response.status === 403?"retry":response.json()})  
+        .then(response => {console.log(response);  return response.status === 403?"retry":response.json()})  
         .then(data => { console.log(data); return data; })
         .catch(e => { console.log(e); return "retry"; })
 
@@ -98,27 +99,43 @@ const useQuery = (page, pageSize, allRows, pattern) => {
 };
 
 
+
 export default function DataGridComp() {
-    //const [data, setData] = React.useState([]);
-    //const [rowCount, setRowCount] = React.useState(0);
-    //const [isLoading, setiSLoading] = React.useState(false);
+    const [data, setData] = React.useState([]);
+    const [rowCount, setRowCount] = React.useState(0);
+    const [isLoading, setIsLoading] = React.useState(false);
 
 
     const [pattern, setPattern] = React.useState("17)");
-    const [rowsState, setRowsState] = React.useState({ page: -1, pageSize: 10, })
+    const [rowsState, setRowsState] = React.useState({ page: 0, pageSize: 10, })
 
 
     //const pageChange = (newPage) => { setPage(newPage); }
 
-    /*const search =  React.useCallback( () => {
-        if (isLoading) return;
-        const { isLoading2, data2, rowCount2 } = useQuery(rowsState.page,rowsState.pageSize,[],pattern);
-        isLoading = isLoading2;
-        data = data2;
-        rowCount = rowCount2;
+   
+    const search = (event) => {
 
-    },[isLoading]);*/
+        setIsLoading(true);
+        setRowCount(undefined);
+        console.log(event);
+        console.log(rowsState);
+        (async () => {
+            let aux = await getData(Number.isInteger(event)?event:0, rowsState.pageSize, pattern);
+            if (aux === 'retry') {
+                let jwt = await getAuthToken();
+                aux = await getData(Number.isInteger(event)?event:0, rowsState.pageSize, pattern);
 
+            }
+
+            if (aux && aux !== 'retry') {
+              setData(aux.bookViewList);
+              setRowCount(aux.totalSize);
+              setIsLoading(false);
+            }else if(aux ==='retry')setIsLoading(false);
+
+        })();
+
+    };
 
     const newPattern = (event) => { setPattern(event.target.value); }
 
@@ -128,23 +145,20 @@ export default function DataGridComp() {
     }, [rowCount, setRowCountState]);
 
 
-    const { isLoading, data, rowCount } = useQuery(
-        rowsState.page,
-        rowsState.pageSize,
-        [], pattern);
     return (
         <div style={{ height: 400, width: '100%' }}>
             <Box>
                 <Stack spacing={2} direction="row">
-                    <TextField label="Palabra" id="idPattern" onChange={newPattern} defaultValue="17)"
+                    <TextField label="Palabra" id="idPattern" onChange={newPattern}
                         InputProps={{ startAdornment: <InputAdornment position="start"></InputAdornment> }}
                     />
-                    <Button variant="contained" color="success">Search</Button>
+                    <Button variant="contained" color="success" onClick={search}> Search</Button>
                 </Stack>
             </Box>
             <DataGrid
                 rows={data}
                 rowCount={rowCountState}
+                getRowId={(row) => Math.random()}
                 columns={[
                     {
                         field: "page",
@@ -152,7 +166,7 @@ export default function DataGridComp() {
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
-                        width: 100
+                        width: 60
                     },
                     {
                         field: "chapter",
@@ -160,20 +174,20 @@ export default function DataGridComp() {
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
-                        width: 100
+                        width: 40
                     },
                     {
                         field: "substring",
                         headerName: "Encontrado",
                         renderCell: (params) => (
                             <div> {params.value}</div>
-                        ), width: 300
+                        ), width: 600
                     },
                 ]}
                 pagination
                 {...rowsState}
                 paginationMode="server"
-                onPageChange={(page) => setRowsState((prev) => ({ ...prev, page }))}
+                onPageChange={(page) => { setRowsState((prev) => ({ ...prev, page }));  search(page); }}
                 onPageSizeChange={(pageSize) => setRowsState((prev) => ({ ...prev, pageSize }))}
                 components={{ Toolbar: GridToolbar, }}
                 loading={isLoading}
