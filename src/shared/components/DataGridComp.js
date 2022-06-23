@@ -2,11 +2,17 @@ import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Stack, TextField, InputAdornment } from '@mui/material';
 import { Box } from '@mui/system';
-const headersAuth = { 'Content-Type': 'application/json' };
+import  getBodyRequest  from '../functions/queryMongo.js';
 
+const headersAuth = { 'Content-Type': 'application/json' };
 const headersRequest = {
     Accept: "application/json",  'Content-Type': 'application/json',
     Authorization: "Bearer " + localStorage.getItem('jwt')
+};
+const headersRequestMongo = {
+    Accept: "application/json",  'Content-Type': 'application/json',
+    'api-key':process.env.REACT_APP_URL_API_Mongo_APIKEY, 'Access-Control-Request-Headers':'*'
+    , 'X-Requested-With': 'XMLHttpRequest'
 };
 
 
@@ -35,6 +41,7 @@ async function getData(pageNo, pageSize, pattern) {
         headers: headersRequest,
     };
 
+   
     return await fetch(process.env.REACT_APP_URL_API_BOOK + '/api/book/findByPattern/' + pattern + '?' + 'pageNo=' + pageNo + '&pageSize=' + pageSize, options)
         .then(response => {  return response.status === 403?"retry":response.json()})  
         //.then(data => { console.log(data); return data; })
@@ -42,21 +49,40 @@ async function getData(pageNo, pageSize, pattern) {
 
 }
 
+async function getDataMongo(pageNo, pageSize, pattern) {
+    
+    var patternEscape = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\\\" + '$&');
+    console.log(patternEscape);
+    var bodyRequest = getBodyRequest(pageNo, pageSize, pattern,patternEscape); 
+    const options = {
+        method: 'POST',
+        headers: headersRequestMongo,
+        body: bodyRequest
+    };
+
+    console.log("bodyRequest :" + bodyRequest);
+    return await fetch(process.env.REACT_APP_URL_API_Mongo + '/aggregate' , options)
+        .then(response => {  return response.status === 403?"retry":response.json()})  
+       // .then(data => { console.log(data); return data; })
+        .catch(e => { console.log(e); return "retry"; })
+
+}
+
+
 const loadServerRows = (page, pagSize, allRows, pattern) =>
     new Promise((resolve) => {
         setTimeout(() => {
             resolve(() => {
                 (async () => {
-                    let aux = await getData(page + 1, pagSize, pattern);
+                    let aux = await getDataMongo((page + 1) * pagSize, pagSize, pattern);
                     if (aux === 'retry') {
-                        let jwt = await getAuthToken();
+                        //let jwt = await getAuthToken();
                         //console.log("Intentar de nuevo")
-                        aux = await getData(page + 1, pagSize, pattern);
+                        //aux = await getData(page + 1, pagSize, pattern);
                         //console.log("ver2:" + aux);
                     }
-
+                    
                     if(aux && aux !== 'retry'){
-                        //console.log("ver :" + aux);
                         allRows.push(...aux)
                         allRows.slice(page * pagSize, (page + 1) * pagSize);
                     }
@@ -116,16 +142,16 @@ export default function DataGridComp() {
         setIsLoading(true);
         setRowCount(undefined);
         (async () => {
-            let aux = await getData(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
+            let aux = await getDataMongo(Number.isInteger(eventOrVal)?(eventOrVal)*rowsState.pageSize :0, rowsState.pageSize, pattern);
             if (aux === 'retry') {
-                let jwt = await getAuthToken();
-                aux = await getData(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
+                //let jwt = await getAuthToken();
+                //aux = await getDataMongo(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
 
             }
-
-            if (aux && aux !== 'retry') {
-              setData(aux.bookViewList);
-              setRowCount(aux.totalSize);
+            console.log(aux)
+            if (aux  && aux !== 'retry') {
+              setData(aux.documents[0].data);
+              setRowCount(aux.documents[0].total);
               setIsLoading(false);
             }else if(aux ==='retry')setIsLoading(false);
 
@@ -170,14 +196,14 @@ export default function DataGridComp() {
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
-                        width: 40
+                        width: 80
                     },
                     {
-                        field: "substring",
+                        field: "area",
                         headerName: "Encontrado",
                         renderCell: (params) => (
                             <div> {params.value}</div>
-                        ), width: 800
+                        ), width: 1000
                     },
                 ]}
                 pagination

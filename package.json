@@ -2,7 +2,7 @@
   "name": "libroCielo",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://tercetfiat.github.io/libroCielo/",
+  "homepage": "https://tercetfiat.github.io/libroCielo",
   "description": "Libro de Cielo",
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
