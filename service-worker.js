@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/libroCielo/precache-manifest.d20533ddb21a4d44fde1f467ba8bcbfe.js"
+  "/libroCielo/precache-manifest.9624957c5ad9f44161fca3d26abd0024.js"
 );
 
 workbox.clientsClaim();
