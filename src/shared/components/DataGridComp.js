@@ -52,7 +52,6 @@ async function getData(pageNo, pageSize, pattern) {
 async function getDataMongo(pageNo, pageSize, pattern) {
     
     var patternEscape = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\\\" + '$&');
-    console.log(patternEscape);
     var bodyRequest = getBodyRequest(pageNo, pageSize, pattern,patternEscape); 
     const options = {
         method: 'POST',
@@ -60,7 +59,6 @@ async function getDataMongo(pageNo, pageSize, pattern) {
         body: bodyRequest
     };
 
-    console.log("bodyRequest :" + bodyRequest);
     return await fetch(process.env.REACT_APP_URL_API_Mongo + '/aggregate' , options)
         .then(response => {  return response.status === 403?"retry":response.json()})  
        // .then(data => { console.log(data); return data; })
@@ -148,7 +146,7 @@ export default function DataGridComp() {
                 //aux = await getDataMongo(Number.isInteger(eventOrVal)?eventOrVal:0, rowsState.pageSize, pattern);
 
             }
-            console.log(aux)
+            //console.log(aux)
             if (aux  && aux !== 'retry') {
               setData(aux.documents[0].data);
               setRowCount(aux.documents[0].total);
