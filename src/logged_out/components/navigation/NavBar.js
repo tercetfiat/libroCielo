@@ -47,7 +47,11 @@ function NavBar(props) {
       link: "/",
       name: "Home",
       icon: <HomeIcon className="text-white" />
-    },
+    },{
+      link: "/libroCielo",
+      name: "Libro Cielo",
+      icon: <BookIcon className="text-white" />
+    }
     /*{
       link: "/blog",
       name: "Blog",
