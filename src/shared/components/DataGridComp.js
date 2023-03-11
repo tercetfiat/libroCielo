@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Button, Stack, TextField, InputAdornment } from '@mui/material';
+import { Button, Stack, TextField, InputAdornment,Alert  } from '@mui/material';
 import { Box } from '@mui/system';
 import  getBodyRequest  from '../functions/queryMongo.js';
 
@@ -14,6 +14,8 @@ const headersRequestMongo = {
     'api-key':process.env.REACT_APP_URL_API_Mongo_APIKEY, 'Access-Control-Request-Headers':'*'
     , 'X-Requested-With': 'XMLHttpRequest'
 };
+
+
 
 
 async function getAuthToken() {
@@ -133,7 +135,7 @@ export default function DataGridComp() {
 
 
     //const pageChange = (newPage) => { setPage(newPage); }
-
+    const URL_TOMO = (window.location.hostname.includes("localhost"))?'http://localhost:3000/page':'https://tercetfiat.github.io/libroCielo/page';
    
     const search = (eventOrVal) => {
 
@@ -174,34 +176,36 @@ export default function DataGridComp() {
                     />
                     <Button variant="contained" color="success" onClick={search}> Search</Button>
                 </Stack>
+                <Alert severity="info">Dandole click al número de la pagina habrirá la lectura de la pagina completa</Alert>
             </Box>
             <DataGrid
                 rows={data}
                 rowCount={rowCountState}
-                getRowId={(row) => Math.random()}
+                getRowId={(row) => Math.random()}  //http://localhost:3000/page , https://tercetfiat.github.io/libroCielo/page
                 columns={[
                     {
                         field: "page",
                         headerName: "Pagina",
+                        renderCell: (params) => (
+                        <div onClick={() => { window.open(URL_TOMO + params.value + '.html') }}> {params.value}</div>
+                        ),
+                        width: 60
+                    },
+                    
+                    {
+                        field: "chapter",
+                        headerName: "Libro",
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
                         width: 60
                     },
                     {
-                        field: "chapter",
-                        headerName: "Capitulo",
-                        renderCell: (params) => (
-                            <div> {params.value}</div>
-                        ), "type": "number",
-                        width: 80
-                    },
-                    {
                         field: "area",
                         headerName: "Encontrado",
                         renderCell: (params) => (
                             <div> {params.value}</div>
-                        ), width: 1000
+                        ), width: 950
                     },
                 ]}
                 pagination
