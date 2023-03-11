@@ -34,7 +34,7 @@ function Routing(props) {
         selectBlog={selectBlog}
         blogPosts={blogPosts}
       />
-      <PropsRoute exact path="/libroCielo" component={LibroCielo}  /> {/**/}
+      <PropsRoute exact path="/tomosLibroCielo" component={LibroCielo}  /> {/**/}
      
       <PropsRoute path="/" component={Home} selectHome={selectHome} />
       
