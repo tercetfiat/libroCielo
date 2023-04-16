@@ -176,7 +176,7 @@ export default function DataGridComp() {
                     />
                     <Button variant="contained" color="success" onClick={search}> Search</Button>
                 </Stack>
-                <Alert severity="info">Dandole click al número de la pagina habrirá la lectura de la pagina completa</Alert>
+                <Alert severity="info">Dandole click al número de la pagina habrirá la pagina completa, "Lecturas" son las que se encontrarón en la página</Alert>
             </Box>
             <DataGrid
                 rows={data}
@@ -185,11 +185,11 @@ export default function DataGridComp() {
                 columns={[
                     {
                         field: "page",
-                        headerName: "Pagina",
+                        headerName: "Página",
                         renderCell: (params) => (
                         <div onClick={() => { window.open(URL_TOMO + params.value + '.html') }}> {params.value}</div>
                         ),
-                        width: 60
+                        width: 57
                     },
                     
                     {
@@ -198,14 +198,23 @@ export default function DataGridComp() {
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
-                        width: 60
+                        width: 57
                     },
+                    {
+                        field: "lec",
+                        headerName: "Lecturas",
+                        renderCell: (params) => (
+                            <div> {params.value}</div>
+                        ), "type": "number",
+                        width: 95
+                    }
+                    ,
                     {
                         field: "area",
                         headerName: "Encontrado",
                         renderCell: (params) => (
                             <div> {params.value}</div>
-                        ), width: 950
+                        ), width: 900
                     },
                 ]}
                 pagination
