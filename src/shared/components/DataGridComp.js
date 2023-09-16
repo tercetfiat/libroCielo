@@ -63,7 +63,7 @@ async function getDataMongo(pageNo, pageSize, pattern) {
 
     return await fetch(process.env.REACT_APP_URL_API_Mongo + '/aggregate' , options)
         .then(response => {  return response.status === 403?"retry":response.json()})  
-       // .then(data => { console.log(data); return data; })
+        .then(data => { console.log(data); return data; })
         .catch(e => { console.log(e); return "retry"; })
 
 }
@@ -206,7 +206,7 @@ export default function DataGridComp() {
                         renderCell: (params) => (
                             <div> {params.value}</div>
                         ), "type": "number",
-                        width: 95
+                        width: 105
                     }
                     ,
                     {
