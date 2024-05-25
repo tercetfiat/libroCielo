@@ -1,17 +1,21 @@
-import React, { Fragment, useEffect } from "react";
-import PropTypes from "prop-types";
-import HeadSection from "../home/HeadSection";
-import FeatureSection from "../home/FeatureSection";
+import React, { useState, useEffect } from 'react';
 
-var __html = require('./index.html');
-var template = { __html: __html };
-function LibroCielo(props) {
+function LibroCielo() {
+  const [htmlContent, setHtmlContent] = useState('');
+
+  useEffect(() => {
+    fetch('/libro-cielo.html')
+      .then(response => response.text())
+      .then(html => setHtmlContent(html))
+      .catch(error => console.error('Error fetching HTML:', error));
+  }, []); 
+
   return (
-    <Fragment>
-       <div dangerouslySetInnerHTML={template} />  
-    </Fragment>
+    <div>
+      {/* ... other content ... */}
+      <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> 
+    </div>
   );
 }
-
 
 export default LibroCielo;
